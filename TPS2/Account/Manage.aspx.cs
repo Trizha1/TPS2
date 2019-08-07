@@ -107,9 +107,7 @@ namespace TPS2.Account
                 PhoneTextBox.Text = employee.PhoneNumber;
                 Address1TextBox.Text = employee.Location.AddressLine1;
                 Address2TextBox.Text = employee.Location.AddressLine2;
-                CityTextBox.Text = employee.Location.City;
-                //TODO Add state stuff
-                //StatesListBox.SelectedIndex =
+                CityTextBox.Text = employee.Location.City;               
                 ZipTextBox.Text = employee.Location.Zip;
             }
         }
