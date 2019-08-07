@@ -82,6 +82,7 @@ namespace TPS2.Account
                         : message == "RemoveLoginSuccess" ? "The account was removed."
                         : message == "AddPhoneNumberSuccess" ? "Phone number has been added"
                         : message == "RemovePhoneNumberSuccess" ? "Phone number was removed"
+                        : message == "UpdateInfoSuccess" ? "Your information has been updated"
                         : String.Empty;
                     successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
                 }
@@ -183,8 +184,11 @@ namespace TPS2.Account
 
             //TODO needs to know when to update and when to insert...
             //var spName = dataExists ? "UpdateEmployeeInfo" : "InsertEmployeeInfo";
-            var spName = "InsertEmployeeInfo";
-            _databaseConnection.RunStoredProc(spName, parameters);
+            //var spName = "InsertEmployeeInfo";
+            _databaseConnection.RunStoredProc(DBConnect.StoredProcs.UpdateEmployeeInfo, parameters);
+            
+            Response.Redirect("/Account/Manage?m=UpdateInfoSuccess");
+
             //dataExists = true;
 
             //if (_databaseConnection.RunStoredProc(spName, parameters))
