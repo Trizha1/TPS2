@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Configuration;
-using Microsoft.Owin.Security;
 using TPS2.Models;
 
 namespace TPS2.DBInteraction
@@ -68,14 +64,14 @@ namespace TPS2.DBInteraction
         public bool EducationRequired { get; set; }
         public int Salary { get; set; }
         public Address Location { get; set; }
-        public string RequesterId { get; set; }
+        //public string RequesterId { get; set; }
         public bool Complete { get; set; }
         public DateTime RequestDate { get; set; }
-        public bool TelecommuteAvail { get; set; }
+        //public bool TelecommuteAvail { get; set; }
     }
     //TODO Fix all the hardcoded methods/functions to use stored procs
 
-    public class DBConnect
+    public class DbConnect
     {
         /// <summary>
         /// Any new Stored procs need to be added here so they can be called from the function
@@ -242,37 +238,7 @@ namespace TPS2.DBInteraction
 
             return skillIds;
         }
-
-        //TODO Update to return list/accept query to run
-        public bool RunSelectQuery(string query)
-        {
-            using (var con =
-                new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
-            {
-                var cmd = new SqlCommand(query, con);
-                cmd.Connection.Open();
-                var reader = cmd.ExecuteReader();
-                try
-                {
-                    while (reader.Read())
-                    {
-                        //reader
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-                finally
-                {
-                    cmd.Connection.Close();
-                }
-            }
-
-            return true;
-        }
-
+        
         public List<Request> GetUnfilledRequests()
         {
             var unfilledRequests = new List<Request>();
@@ -432,7 +398,7 @@ namespace TPS2.DBInteraction
         /// <returns>ID of the inserted record</returns>
         public int RunStoredProcReturnId(StoredProcs spName, List<Parameter> parameters)
         {
-            int returnValue = 0;
+            int returnValue;
 
             using (var con =
                 new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
@@ -491,7 +457,6 @@ namespace TPS2.DBInteraction
             using (var con =
                 new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                //TODO Clean up this query so we're only selecting values that we're using
                 var sql = "SELECT * FROM employee e JOIN EmployeeAddress ea on e.AddressID = ea.Id JOIN CD_State cs on ea.StateCD = cs.StateCD WHERE AspNetUserID = '" + aspNetUserId + "' AND Expired IS NULL";
                 var cmd = new SqlCommand(sql, con);
                 cmd.Connection.Open();

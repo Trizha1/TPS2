@@ -11,7 +11,7 @@ namespace TPS2.Customer
 {
     public partial class ViewRequests : System.Web.UI.Page
     {
-        private DBConnect _dbConnect = new DBConnect();
+        private DbConnect _dbConnect = new DbConnect();
 
         protected string SuccessMessage
         {

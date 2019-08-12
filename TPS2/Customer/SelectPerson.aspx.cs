@@ -7,7 +7,7 @@ namespace TPS2.Customer
 {
     public partial class SelectPerson : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
         protected string SuccessMessage
         {
             get;

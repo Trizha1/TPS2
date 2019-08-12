@@ -18,7 +18,7 @@ namespace TPS2.Account
 {
     public partial class Manage : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
         private EmployeeModel employee;
         //private bool dataExists = true;
 
@@ -179,7 +179,6 @@ namespace TPS2.Account
 
         protected void SubmitBtn_Click(object sender, EventArgs e)
         {
-            //TODO Validate inputs 
             var parameters = new List<Parameter>
             {
                 new Parameter {ParameterName = "@FirstName", ParameterValue = FirstNameTextBox.Text},
@@ -201,9 +200,9 @@ namespace TPS2.Account
                 new Parameter {ParameterName = "@ResumeLocation", ParameterValue = resumeUpload.FileName},
                 new Parameter {ParameterName = "@PictureLocation", ParameterValue = pictureUpload.FileName}
             };
-            _databaseConnection.RunStoredProc(DBConnect.StoredProcs.UpdateEmployeeInfo, parameters);
+            _databaseConnection.RunStoredProc(DbConnect.StoredProcs.UpdateEmployeeInfo, parameters);
 
-            _databaseConnection.RunStoredProc(DBConnect.StoredProcs.ClearSkills, new List<Parameter>{new Parameter{ParameterName = "@Id", ParameterValue = User.Identity.GetUserId() } });
+            _databaseConnection.RunStoredProc(DbConnect.StoredProcs.ClearSkills, new List<Parameter>{new Parameter{ParameterName = "@Id", ParameterValue = User.Identity.GetUserId() } });
 
             var requiredItems = SkillListBox.Items.Cast<ListItem>().Where(item => item.Selected);
             foreach (var item in requiredItems)
@@ -214,7 +213,7 @@ namespace TPS2.Account
                     new Parameter {ParameterName = "@SkillId", ParameterValue = item.Value}
                 };
 
-                _databaseConnection.RunStoredProc(DBConnect.StoredProcs.InsertEmployeeSkills, skillParameters);
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.InsertEmployeeSkills, skillParameters);
             }
 
             Response.Redirect("/Account/Manage?m=UpdateInfoSuccess");

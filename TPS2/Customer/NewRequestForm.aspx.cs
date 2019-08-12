@@ -10,7 +10,7 @@ namespace TPS2.Customer
 {
     public partial class NewRequestForm : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
         private List<Skill> _skillList = new List<Skill>();
 
         protected string SuccessMessage
@@ -98,7 +98,7 @@ namespace TPS2.Customer
                 //new Parameter {ParameterName = "@Telecommute", ParameterValue = TelecommuteCheckBox.Checked ? "1" : "0"},
                 new Parameter {ParameterName = "@RequestorID", ParameterValue = User.Identity.GetUserId()}
             };
-            var clientRequestId = _databaseConnection.RunStoredProcReturnId(DBConnect.StoredProcs.InsertClientRequest, parameters);
+            var clientRequestId = _databaseConnection.RunStoredProcReturnId(DbConnect.StoredProcs.InsertClientRequest, parameters);
             
             
             //insert the skills
@@ -113,7 +113,7 @@ namespace TPS2.Customer
                     new Parameter {ParameterName = "@Required", ParameterValue = "1"}
                 };
 
-                _databaseConnection.RunStoredProc(DBConnect.StoredProcs.InsertClientRequestSkills, skillParameters);
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.InsertClientRequestSkills, skillParameters);
             }
 
             var requestedItems = RequestedSkillListBox.Items.Cast<ListItem>().Where(item => item.Selected);
@@ -127,7 +127,7 @@ namespace TPS2.Customer
                 };
 
 
-                _databaseConnection.RunStoredProc(DBConnect.StoredProcs.InsertClientRequestSkills, skillParameters);
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.InsertClientRequestSkills, skillParameters);
             }
 
             Response.Redirect("/Customer/NewRequestForm?m=AddRequestSuccess");

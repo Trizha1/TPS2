@@ -399,7 +399,7 @@
     <Compile Include="Customer\ViewRequests.aspx.designer.cs">
       <DependentUpon>ViewRequests.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DBInteraction\DBConnect.cs" />
+    <Compile Include="DBInteraction\DbConnect.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

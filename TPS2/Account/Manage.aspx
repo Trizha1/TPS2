@@ -30,37 +30,41 @@
                 </dl>
             </div>
             <div>
-                <dl>
-                    <dt>First Name:</dt>
-                    <asp:TextBox runat="server" ID="FirstNameTextBox"></asp:TextBox>
-                    <dt>Last Name:</dt>
-                    <asp:TextBox runat="server" ID="LastNameTextBox"></asp:TextBox>
-                    <dt>Phone Number:</dt>
-                    <asp:TextBox runat="server" ID="PhoneTextBox"></asp:TextBox>
-                    <dt>Address Line 1:</dt>
-                    <asp:TextBox runat="server" ID="Address1TextBox"></asp:TextBox>
-                    <dt>Address Line 2:</dt>
-                    <asp:TextBox runat="server" ID="Address2TextBox"></asp:TextBox>
-                    <dt>City:</dt>
-                    <asp:TextBox runat="server" ID="CityTextBox"></asp:TextBox>
-                    <dt>State:</dt>
-                    <asp:DropDownList runat="server" ID="StatesListBox"/>
-                    <dt>Zip:</dt>
-                    <asp:TextBox runat="server" ID="ZipTextBox"></asp:TextBox>
-                    <dt>Willing to Relocate?:</dt>
-                    <asp:CheckBox runat="server" ID="RelocateCheckBox"/>
-                    <dt>Availability Date</dt>
-                    <asp:Calendar runat="server" ID="AvailabilityDateCalendar"></asp:Calendar>
-                    <dt>Skills</dt>
-                    <asp:ListBox runat="server" ID="SkillListBox" SelectionMode="Multiple"/>
-                    <dt>Upload Resume</dt>
-                    <asp:FileUpload runat="server" ID="resumeUpload" AllowMultiple="False"/>
-                    <asp:TextBox runat="server" ID="ResumeName" Visible="False" ReadOnly="True"></asp:TextBox>
-                    <dt>Upload Picture</dt>
-                    <asp:FileUpload runat="server" ID="pictureUpload" AllowMultiple="False"/>
-                    <asp:TextBox runat="server" ID="PictureName" Visible="False" ReadOnly="True"></asp:TextBox>
-                </dl>
-                
+                <h4>First Name:</h4>
+                <asp:TextBox runat="server" ID="FirstNameTextBox" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="FirstNameTextBox" CssClass="text-danger" ErrorMessage="The First Name field is required."/>
+                <h4>Last Name:</h4>
+                <asp:TextBox runat="server" ID="LastNameTextBox" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="LastNameTextBox" CssClass="text-danger" ErrorMessage="The Last Name field is required."/>
+                <h4>Phone Number:</h4>
+                <asp:TextBox runat="server" ID="PhoneTextBox" ></asp:TextBox>
+                <h4>Address Line 1:</h4>
+                <asp:TextBox runat="server" ID="Address1TextBox"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Address1TextBox" CssClass="text-danger" ErrorMessage="The Address field is required."/>
+                <h4>Address Line 2:</h4>
+                <asp:TextBox runat="server" ID="Address2TextBox"></asp:TextBox>
+                <h4>City:</h4>
+                <asp:TextBox runat="server" ID="CityTextBox"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="CityTextBox" CssClass="text-danger" ErrorMessage="The City field is required."/>
+                <h4>State:</h4>
+                <asp:DropDownList runat="server" ID="StatesListBox"/>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="StatesListBox" CssClass="text-danger" ErrorMessage="The State field is required."/>
+                <h4>Zip:</h4>
+                <asp:TextBox runat="server" ID="ZipTextBox" type="number" ></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="ZipTextBox" CssClass="text-danger" ErrorMessage="The Zip field is required."/>
+                <h4>Willing to Relocate?:</h4>
+                <asp:CheckBox runat="server" ID="RelocateCheckBox"/>
+                <h4>Availability Date</h4>
+                <asp:Calendar runat="server" ID="AvailabilityDateCalendar"></asp:Calendar>
+                <h4>Skills</h4>
+                <p>Select as many as you like using the CTRL key to select multiple</p>
+                <asp:ListBox runat="server" ID="SkillListBox" SelectionMode="Multiple" height="200"/>
+                <h4>Upload Resume</h4>
+                <asp:FileUpload runat="server" ID="resumeUpload" AllowMultiple="False"/>
+                <asp:TextBox runat="server" ID="ResumeName" Visible="False" ReadOnly="True"></asp:TextBox>
+                <h4>Upload Picture</h4>
+                <asp:FileUpload runat="server" ID="pictureUpload" AllowMultiple="False"/>
+                <asp:TextBox runat="server" ID="PictureName" Visible="False" ReadOnly="True"></asp:TextBox>
                 <asp:Button runat="server" ID="SubmitBtn" Text="Submit" OnClick="SubmitBtn_Click"/>
             </div>
         </div>

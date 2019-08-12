@@ -37,7 +37,6 @@ namespace TPS2.Models
         public string AspNetUserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        //TODO Data type for this?
         public string PhoneNumber { get; set; }
         public Address Location { get; set; }
         public bool WillingToRelocate { get; set; }

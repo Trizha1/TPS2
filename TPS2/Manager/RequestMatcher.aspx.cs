@@ -11,7 +11,7 @@ namespace TPS2.Manager
 {
     public partial class RequestMatcher : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
 
         protected string SuccessMessage
         {
@@ -86,7 +86,7 @@ namespace TPS2.Manager
                     new Parameter {ParameterName = "@RequestId", ParameterValue = ActiveRequests.SelectedItem.Value}
                 };
 
-                _databaseConnection.RunStoredProc(DBConnect.StoredProcs.MatchRequest, requestMatch);
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.MatchRequest, requestMatch);
                 
                 peopleCaption.Visible = false;
                 People.Visible = false;

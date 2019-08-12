@@ -10,7 +10,7 @@ namespace TPS2.Manager
 {
     public partial class AssignPermissions : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
         public Roles Roles { get; set; }
 
         protected string SuccessMessage
