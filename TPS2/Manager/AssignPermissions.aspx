@@ -1,6 +1,19 @@
 ﻿<%@ Page Title="Assign Permissions" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AssignPermissions.aspx.cs" Inherits="TPS2.Manager.AssignPermissions" %>
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
+
     <h2><%: Title %></h2>
+    <style>
+        body {
+            background: #4682B4;
+        }
+        td {
+            color: #ffffff;
+            font-size:medium;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+        }
+      
+    </style>
     <div>
         <asp:PlaceHolder runat="server" ID="successMessage" Visible="false" ViewStateMode="Disabled">
             <p class="text-success"><%: SuccessMessage %></p>
