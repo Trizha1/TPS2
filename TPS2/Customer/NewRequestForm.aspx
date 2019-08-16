@@ -1,5 +1,21 @@
 ﻿<%@ Page Title="New Employee Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NewRequestForm.aspx.cs" Inherits="TPS2.Customer.NewRequestForm" %>
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        body {
+            background: #466368;
+        }
+        h4 {
+            color: #ffffff;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+        }
+        h5 {
+            color: black;
+            font-style:italic;
+             
+        }
+
+    </style>
     <h2><%: Title %>.</h2>
 
     <div>
@@ -9,10 +25,10 @@
     </div>
     <div>
         <h4>Required Skills</h4>
-        <p>Select as many as you like using the CTRL key to select multiple</p>
+        <h5>Select as many as you like using the CTRL key to select multiple</h5>
         <asp:ListBox runat="server" ID="RequiredSkillListBox" SelectionMode="Multiple"/>
         <h4>Requested Skills</h4>
-        <p>Select as many as you like using the CTRL key to select multiple</p>
+        <h5>Select as many as you like using the CTRL key to select multiple</h5>
         <asp:ListBox runat="server" ID="RequestedSkillListBox" SelectionMode="Multiple"/>
         <h4>Education Level</h4>
         <asp:DropDownList runat="server" ID="EducationLevel"/>
