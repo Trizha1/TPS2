@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -11,16 +12,17 @@ using Microsoft.Owin.Security;
 using Owin;
 using TPS2.DBInteraction;
 using TPS2.Models;
+using Parameter = TPS2.DBInteraction.Parameter;
 
 namespace TPS2.Account
 {
     public partial class Manage : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
         private EmployeeModel employee;
         //private bool dataExists = true;
 
-        public List<State> StateList = new List<State>();
+        public List<StateType> StateList = new List<StateType>();
 
         protected string SuccessMessage
         {
@@ -58,6 +60,12 @@ namespace TPS2.Account
 
             if (!IsPostBack)
             {
+                //Get the skills from the DB
+                SkillListBox.DataSource = _databaseConnection.GetSkillList();
+                SkillListBox.DataValueField = "Id";
+                SkillListBox.DataTextField = "Name";
+                SkillListBox.DataBind();
+
                 // Determine the sections to render
                 if (HasPassword(manager))
                 {
@@ -92,15 +100,11 @@ namespace TPS2.Account
                 StatesListBox.DataTextField = "Name";
                 StatesListBox.DataBind();
 
-
                 employee = _databaseConnection.GetEmployeeModel(User.Identity.GetUserId());
                 if (employee.FirstName == null)
                 {
-                    //dataExists = false;
                     return;
                 }
-                //dataExists = true;
-                //fill textboxes
                 FirstNameTextBox.Text = employee.FirstName;
                 LastNameTextBox.Text = employee.LastName;
                 RelocateCheckBox.Checked = employee.WillingToRelocate;
@@ -108,8 +112,23 @@ namespace TPS2.Account
                 PhoneTextBox.Text = employee.PhoneNumber;
                 Address1TextBox.Text = employee.Location.AddressLine1;
                 Address2TextBox.Text = employee.Location.AddressLine2;
-                CityTextBox.Text = employee.Location.City;               
+                CityTextBox.Text = employee.Location.City;
+                StatesListBox.SelectedIndex = StatesListBox.Items.IndexOf(StatesListBox.Items.FindByText(employee.Location.State.Name));
                 ZipTextBox.Text = employee.Location.Zip;
+                if (employee.ResumeLocation.Length > 0)
+                {
+                    ResumeName.Text = employee.ResumeLocation;
+                    ResumeName.Visible = true;
+                }
+
+                if (employee.PictureLocation.Length > 0)
+                {
+                    PictureName.Text = employee.PictureLocation;
+                    PictureName.Visible = true;
+                }
+
+                foreach (Experience skill in employee.WorkExperience)
+                    SkillListBox.Items.FindByValue(skill.ExperienceId.ToString()).Selected = true;
             }
         }
 
@@ -160,41 +179,44 @@ namespace TPS2.Account
 
         protected void SubmitBtn_Click(object sender, EventArgs e)
         {
-            //TODO Prevent inserting when there's already values
-            //TODO Validate inputs 
-            var parameters = new List<ParameterList>
+            var parameters = new List<Parameter>
             {
-                new ParameterList {ParameterName = "@FirstName", Parameter = FirstNameTextBox.Text},
-                new ParameterList {ParameterName = "@LastName", Parameter = LastNameTextBox.Text},
-                new ParameterList {ParameterName = "@AspNetUserId", Parameter = User.Identity.GetUserId()},
-                new ParameterList
-                    {ParameterName = "@Relocate", Parameter = RelocateCheckBox.Checked == true ? "1" : "0"},
-                new ParameterList
+                new Parameter {ParameterName = "@FirstName", ParameterValue = FirstNameTextBox.Text},
+                new Parameter {ParameterName = "@LastName", ParameterValue = LastNameTextBox.Text},
+                new Parameter {ParameterName = "@AspNetUserId", ParameterValue = User.Identity.GetUserId()},
+                new Parameter
+                    {ParameterName = "@Relocate", ParameterValue = RelocateCheckBox.Checked == true ? "1" : "0"},
+                new Parameter
                 {
                     ParameterName = "@AvailabilityDate",
-                    Parameter = AvailabilityDateCalendar.SelectedDate.ToShortDateString()
+                    ParameterValue = AvailabilityDateCalendar.SelectedDate.ToShortDateString()
                 },
-                new ParameterList {ParameterName = "@PhoneNumber", Parameter = PhoneTextBox.Text},
-                new ParameterList {ParameterName = "@AddressLine1", Parameter = Address1TextBox.Text},
-                new ParameterList {ParameterName = "@AddressLine2", Parameter = Address2TextBox.Text},
-                new ParameterList {ParameterName = "@City", Parameter = CityTextBox.Text},
-                new ParameterList {ParameterName = "@Zip", Parameter = ZipTextBox.Text},
-                new ParameterList {ParameterName = "@State", Parameter = StatesListBox.Text}
+                new Parameter {ParameterName = "@PhoneNumber", ParameterValue = PhoneTextBox.Text},
+                new Parameter {ParameterName = "@AddressLine1", ParameterValue = Address1TextBox.Text},
+                new Parameter {ParameterName = "@AddressLine2", ParameterValue = Address2TextBox.Text},
+                new Parameter {ParameterName = "@City", ParameterValue = CityTextBox.Text},
+                new Parameter {ParameterName = "@Zip", ParameterValue = ZipTextBox.Text},
+                new Parameter {ParameterName = "@State", ParameterValue = StatesListBox.Text},
+                new Parameter {ParameterName = "@ResumeLocation", ParameterValue = resumeUpload.FileName},
+                new Parameter {ParameterName = "@PictureLocation", ParameterValue = pictureUpload.FileName}
             };
+            _databaseConnection.RunStoredProc(DbConnect.StoredProcs.UpdateEmployeeInfo, parameters);
 
-            //TODO needs to know when to update and when to insert...
-            //var spName = dataExists ? "UpdateEmployeeInfo" : "InsertEmployeeInfo";
-            //var spName = "InsertEmployeeInfo";
-            _databaseConnection.RunStoredProc(DBConnect.StoredProcs.UpdateEmployeeInfo, parameters);
-            
+            _databaseConnection.RunStoredProc(DbConnect.StoredProcs.ClearSkills, new List<Parameter>{new Parameter{ParameterName = "@Id", ParameterValue = User.Identity.GetUserId() } });
+
+            var requiredItems = SkillListBox.Items.Cast<ListItem>().Where(item => item.Selected);
+            foreach (var item in requiredItems)
+            {
+                var skillParameters = new List<Parameter>
+                {
+                    new Parameter {ParameterName = "@Id", ParameterValue = User.Identity.GetUserId()},
+                    new Parameter {ParameterName = "@SkillId", ParameterValue = item.Value}
+                };
+
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.InsertEmployeeSkills, skillParameters);
+            }
+
             Response.Redirect("/Account/Manage?m=UpdateInfoSuccess");
-
-            //dataExists = true;
-
-            //if (_databaseConnection.RunStoredProc(spName, parameters))
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Your information has been updated.');", true);
-            //else
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('Something went wrong, please contact an admin');", true);}
         }
     }
 }
