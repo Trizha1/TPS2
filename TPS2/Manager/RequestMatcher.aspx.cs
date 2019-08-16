@@ -5,33 +5,68 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using TPS2.DBInteraction;
+using Parameter = TPS2.DBInteraction.Parameter;
 
 namespace TPS2.Manager
 {
     public partial class RequestMatcher : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
+
+        protected string SuccessMessage
+        {
+            get;
+            private set;
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            // Render success message
+            var message = Request.QueryString["m"];
+            if (message != null)
+            {
+                // Strip the query string from action
+                Form.Action = ResolveUrl("~/Manager/RequestMatcher");
+
+                SuccessMessage =
+                    message == "MatchSuccess" ? "Employee matched to request."
+                    //follow this format to add additional messages:
+                    //: message == "SetPwdSuccess" ? "Your password has been set."
+                    : String.Empty;
+                successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
+            }
+
+            if (!IsPostBack || message != null)
             {
                 ActiveRequests.DataSource = _databaseConnection.GetUnfilledRequests();
                 ActiveRequests.DataValueField = "ID";
-                ActiveRequests.DataTextField = "Email";
+                ActiveRequests.DataTextField = "Display";
                 ActiveRequests.DataBind();
-
-                People.DataSource = _databaseConnection.GetAllEmployees();
-                People.DataValueField = "ID";
-                People.DataTextField = "Name";
-                People.DataBind();
             }
         }
 
         protected void EnableSubmit(object sender, EventArgs e)
         {
-            if (ActiveRequests.SelectedIndex > -1 && People.SelectedIndex > -1)
+            if (ActiveRequests.SelectedIndex > -1)
             {
+                People.DataSource = _databaseConnection.GetQualifiedEmployees(ActiveRequests.SelectedValue);
+                People.DataValueField = "ID";
+                People.DataTextField = "Name";
+                People.DataBind();
+
+                if (People.Items.Count > 0)
+                {
+                    peopleCaption.Visible = true;
+                    People.Visible = true;
+                    NoQualified.Visible = false;
+                }
+                else
+                {
+                    peopleCaption.Visible = false;
+                    People.Visible = false;
+                    NoQualified.Visible = true;
+                }
+
                 if (People.GetSelectedIndices().Length == 3)
                 {
                     Submit.Enabled = true;
@@ -39,24 +74,25 @@ namespace TPS2.Manager
             }
         }
 
-        //this needs to make sure we do a post back
         protected void Submit_OnClick(object sender, EventArgs e)
         {
-            var peopleList = new List<ParameterList>();
-
             foreach (var item in People.Items.Cast<ListItem>().Where(item => item.Selected))
             {
-                var requestMatch = new List<ParameterList>
+                var requestMatch = new List<Parameter>
                 { 
                     //ID of the person
-                    new ParameterList {ParameterName = "@AspNetUserId", Parameter = item.Value},
+                    new Parameter {ParameterName = "@AspNetUserId", ParameterValue = item.Value},
                     //ID of the request
-                    new ParameterList {ParameterName = "@RequestId", Parameter = ActiveRequests.SelectedItem.Value}
+                    new Parameter {ParameterName = "@RequestId", ParameterValue = ActiveRequests.SelectedItem.Value}
                 };
 
-                _databaseConnection.RunStoredProc(DBConnect.StoredProcs.MatchRequest, requestMatch);
-                //TODO Success message and refresh list of unfilled requests
+                _databaseConnection.RunStoredProc(DbConnect.StoredProcs.MatchRequest, requestMatch);
+                
+                peopleCaption.Visible = false;
+                People.Visible = false;
+                NoQualified.Visible = false;
             }
+            Response.Redirect("/Manager/RequestMatcher.aspx?m=MatchSuccess");
         }
     }
 }

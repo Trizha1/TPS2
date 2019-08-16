@@ -13,6 +13,15 @@ namespace TPS2.Manager {
     public partial class RequestMatcher {
         
         /// <summary>
+        /// successMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder successMessage;
+        
+        /// <summary>
         /// ActiveRequests control.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,15 @@ namespace TPS2.Manager {
         protected global::System.Web.UI.WebControls.ListBox ActiveRequests;
         
         /// <summary>
+        /// peopleCaption control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl peopleCaption;
+        
+        /// <summary>
         /// People control.
         /// </summary>
         /// <remarks>
@@ -29,6 +47,15 @@ namespace TPS2.Manager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox People;
+        
+        /// <summary>
+        /// NoQualified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NoQualified;
         
         /// <summary>
         /// Submit control.

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TPS2.Customer {
+namespace TPS2.Manager {
     
     
-    public partial class SelectPerson {
+    public partial class AssignPermissions {
         
         /// <summary>
         /// successMessage control.
@@ -22,66 +22,39 @@ namespace TPS2.Customer {
         protected global::System.Web.UI.WebControls.PlaceHolder successMessage;
         
         /// <summary>
-        /// candidatesAvailable control.
+        /// UserList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl candidatesAvailable;
+        protected global::System.Web.UI.WebControls.ListBox UserList;
         
         /// <summary>
-        /// FilledRequests control.
+        /// employeeChkBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList FilledRequests;
+        protected global::System.Web.UI.WebControls.CheckBox employeeChkBox;
         
         /// <summary>
-        /// noCandidates control.
+        /// customerChkBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl noCandidates;
+        protected global::System.Web.UI.WebControls.CheckBox customerChkBox;
         
         /// <summary>
-        /// SelectDiv control.
+        /// managerChkBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SelectDiv;
-        
-        /// <summary>
-        /// CandidateList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox CandidateList;
-        
-        /// <summary>
-        /// CandidateSkillList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox CandidateSkillList;
-        
-        /// <summary>
-        /// Submit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Submit;
+        protected global::System.Web.UI.WebControls.CheckBox managerChkBox;
     }
 }

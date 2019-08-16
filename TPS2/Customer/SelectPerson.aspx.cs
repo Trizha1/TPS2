@@ -7,22 +7,58 @@ namespace TPS2.Customer
 {
     public partial class SelectPerson : System.Web.UI.Page
     {
-        private readonly DBConnect _databaseConnection = new DBConnect();
+        private readonly DbConnect _databaseConnection = new DbConnect();
+        protected string SuccessMessage
+        {
+            get;
+            private set;
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             SelectDiv.Visible = false;
-
-            if (!IsPostBack)
+            noCandidates.Visible = false;
+        
+            var message = Request.QueryString["m"];
+            if (message != null)
             {
-                var filledIds = new List<string>();
+                // Strip the query string from action
+                Form.Action = ResolveUrl("~/Customer/SelectPerson");
+
+                SuccessMessage =
+                    message == "SelectSuccess" ? "Your selection has been noted.  Your new employee will be contacting you soon."
+                        //: message == "SetPwdSuccess" ? "Your password has been set."
+                        : String.Empty;
+                successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
+            }
+
+            if (!IsPostBack || message != null)
+            {
+
+                var filledIds = new List<Tuple<int, string>>();
                 foreach (var id in _databaseConnection.GetFilledRequests(User.Identity.GetUserId()))
                 {
-                    filledIds.Add(id.ToString());
+                    //filledIds.Add(id);
+                    filledIds.Add(new Tuple<int, string>(id.Item1, id.Item2));
                 }
 
-                FilledRequests.DataSource = filledIds;
-                FilledRequests.DataBind();
+                if (filledIds.Count > 0)
+                {
+                    FilledRequests.DataSource = filledIds;
+                    FilledRequests.DataValueField = "Item1";
+                    FilledRequests.DataTextField = "Item2";
+                    FilledRequests.DataBind();
+                }
+                else
+                {
+                    candidatesAvailable.Visible = false;
+                    noCandidates.Visible = true;
+                }
+
+                CandidateSkillList.DataSource = _databaseConnection.GetSkillList();
+                CandidateSkillList.DataValueField = "Id";
+                CandidateSkillList.DataTextField = "Name";
+                CandidateSkillList.DataBind();
             }
         }
 
@@ -40,6 +76,19 @@ namespace TPS2.Customer
         protected void Submit_OnClick(object sender, EventArgs e)
         {
             _databaseConnection.SelectEmployee(CandidateList.SelectedValue, FilledRequests.SelectedValue);
+            SelectDiv.Visible = false;
+            Response.Redirect("/Customer/SelectPerson?m=SelectSuccess");
+        }
+
+        protected void CandidateList_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectDiv.Visible = true;
+
+            CandidateSkillList.ClearSelection();
+
+            var skillList = _databaseConnection.GetEmployeeSkills(CandidateList.SelectedValue);
+            foreach (var id in skillList)
+                CandidateSkillList.Items.FindByValue(id.ToString()).Selected = true;
         }
     }
 }
