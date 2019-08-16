@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Manage Account" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Manage.aspx.cs" Inherits="TPS2.Account.Manage" %>
+<%@ Page Title="Manage Account" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Manage.aspx.cs" Inherits="TPS2.Account.Manage" %>
 
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
@@ -30,84 +30,42 @@
                 </dl>
             </div>
             <div>
-                <dl>
-                    <dt>First Name:</dt>
-                    <asp:TextBox runat="server" ID="FirstNameTextBox"></asp:TextBox>
-                    <dt>Last Name:</dt>
-                    <asp:TextBox runat="server" ID="LastNameTextBox"></asp:TextBox>
-                    <dt>Phone Number:</dt>
-                    <asp:TextBox runat="server" ID="PhoneTextBox"></asp:TextBox>
-                    <dt>Address Line 1:</dt>
-                    <asp:TextBox runat="server" ID="Address1TextBox"></asp:TextBox>
-                    <dt>Address Line 2:</dt>
-                    <asp:TextBox runat="server" ID="Address2TextBox"></asp:TextBox>
-                    <dt>City:</dt>
-                    <asp:TextBox runat="server" ID="CityTextBox"></asp:TextBox>
-                    <dt>State:</dt>
-                     <asp:DropDownList ID="StatesListBox" runat="server"  OnSelectedIndexChanged="StatesListBox_SelectedIndexChanged">
-                        <asp:ListItem Value="Select">Select</asp:ListItem>
-                        <asp:ListItem Value="AL">Alabama</asp:ListItem>
-                        <asp:ListItem Value="AK">Alaska</asp:ListItem>
-                        <asp:ListItem Value="AZ">Arizona</asp:ListItem>
-                        <asp:ListItem Value="AR">Arkansas</asp:ListItem>
-                        <asp:ListItem Value="CA">California</asp:ListItem>
-                        <asp:ListItem Value="CO">Colorado</asp:ListItem>
-                        <asp:ListItem Value="CT">Connecticut</asp:ListItem>
-                        <asp:ListItem Value="DC">District of Columbia</asp:ListItem>
-                        <asp:ListItem Value="DE">Delaware</asp:ListItem>
-                        <asp:ListItem Value="FL">Florida</asp:ListItem>
-                        <asp:ListItem Value="GA">Georgia</asp:ListItem>
-                        <asp:ListItem Value="HI">Hawaii</asp:ListItem>
-                        <asp:ListItem Value="ID">Idaho</asp:ListItem>
-                        <asp:ListItem Value="IL">Illinois</asp:ListItem>
-                        <asp:ListItem Value="IN">Indiana</asp:ListItem>
-                        <asp:ListItem Value="IA">Iowa</asp:ListItem>
-                        <asp:ListItem Value="KS">Kansas</asp:ListItem>
-                        <asp:ListItem Value="KY">Kentucky</asp:ListItem>
-                        <asp:ListItem Value="LA">Louisiana</asp:ListItem>
-                        <asp:ListItem Value="ME">Maine</asp:ListItem>
-                        <asp:ListItem Value="MD">Maryland</asp:ListItem>
-                        <asp:ListItem Value="MA">Massachusetts</asp:ListItem>
-                        <asp:ListItem Value="MI">Michigan</asp:ListItem>
-                        <asp:ListItem Value="MN">Minnesota</asp:ListItem>
-                        <asp:ListItem Value="MS">Mississippi</asp:ListItem>
-                        <asp:ListItem Value="MO">Missouri</asp:ListItem>
-                        <asp:ListItem Value="MT">Montana</asp:ListItem>
-                        <asp:ListItem Value="NE">Nebraska</asp:ListItem>
-                        <asp:ListItem Value="NV">Nevada</asp:ListItem>
-                        <asp:ListItem Value="NH">New Hampshire</asp:ListItem>
-                        <asp:ListItem Value="NJ">New Jersey</asp:ListItem>
-                        <asp:ListItem Value="NM">New Mexico</asp:ListItem>
-                        <asp:ListItem Value="NY">New York</asp:ListItem>
-                        <asp:ListItem Value="NC">North Carolina</asp:ListItem>
-                        <asp:ListItem Value="ND">North Dakota</asp:ListItem>
-                        <asp:ListItem Value="OH">Ohio</asp:ListItem>
-                        <asp:ListItem Value="OK">Oklahoma</asp:ListItem>
-                        <asp:ListItem Value="OR">Oregon</asp:ListItem>
-                        <asp:ListItem Value="PA">Pennsylvania</asp:ListItem>
-                        <asp:ListItem Value="RI">Rhode Island</asp:ListItem>
-                        <asp:ListItem Value="SC">South Carolina</asp:ListItem>
-                        <asp:ListItem Value="SD">South Dakota</asp:ListItem>
-                        <asp:ListItem Value="TN">Tennessee</asp:ListItem>
-                        <asp:ListItem Value="TX">Texas</asp:ListItem>
-                        <asp:ListItem Value="UT">Utah</asp:ListItem>
-                        <asp:ListItem Value="VT">Vermont</asp:ListItem>
-                        <asp:ListItem Value="VA">Virginia</asp:ListItem>
-                        <asp:ListItem Value="WA">Washington</asp:ListItem>
-                        <asp:ListItem Value="WV">West Virginia</asp:ListItem>
-                        <asp:ListItem Value="WI">Wisconsin</asp:ListItem>
-                        <asp:ListItem Value="WY">Wyoming</asp:ListItem>
-                    </asp:DropDownList>   
-                    <dt>Zip:</dt>
-                    <asp:TextBox runat="server" ID="ZipTextBox"></asp:TextBox>
-                    <dt>Willing to Relocate?:</dt>
-                    <asp:CheckBox runat="server" ID="RelocateCheckBox"/>
-                    <dt>Availability Date</dt>
-                    <asp:Calendar runat="server" ID="AvailabilityDateCalendar"></asp:Calendar>
-                    
-                    <asp:Button runat="server" ID="SubmitBtn" Text="Submit" OnClick="SubmitBtn_Click"/>
-                </dl>
-                
+                <h4>First Name:</h4>
+                <asp:TextBox runat="server" ID="FirstNameTextBox" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="FirstNameTextBox" CssClass="text-danger" ErrorMessage="The First Name field is required."/>
+                <h4>Last Name:</h4>
+                <asp:TextBox runat="server" ID="LastNameTextBox" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="LastNameTextBox" CssClass="text-danger" ErrorMessage="The Last Name field is required."/>
+                <h4>Phone Number:</h4>
+                <asp:TextBox runat="server" ID="PhoneTextBox" ></asp:TextBox>
+                <h4>Address Line 1:</h4>
+                <asp:TextBox runat="server" ID="Address1TextBox"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Address1TextBox" CssClass="text-danger" ErrorMessage="The Address field is required."/>
+                <h4>Address Line 2:</h4>
+                <asp:TextBox runat="server" ID="Address2TextBox"></asp:TextBox>
+                <h4>City:</h4>
+                <asp:TextBox runat="server" ID="CityTextBox"></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="CityTextBox" CssClass="text-danger" ErrorMessage="The City field is required."/>
+                <h4>State:</h4>
+                <asp:DropDownList runat="server" ID="StatesListBox"/>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="StatesListBox" CssClass="text-danger" ErrorMessage="The State field is required."/>
+                <h4>Zip:</h4>
+                <asp:TextBox runat="server" ID="ZipTextBox" type="number" ></asp:TextBox>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="ZipTextBox" CssClass="text-danger" ErrorMessage="The Zip field is required."/>
+                <h4>Willing to Relocate?:</h4>
+                <asp:CheckBox runat="server" ID="RelocateCheckBox"/>
+                <h4>Availability Date</h4>
+                <asp:Calendar runat="server" ID="AvailabilityDateCalendar"></asp:Calendar>
+                <h4>Skills</h4>
+                <p>Select as many as you like using the CTRL key to select multiple</p>
+                <asp:ListBox runat="server" ID="SkillListBox" SelectionMode="Multiple" height="200"/>
+                <h4>Upload Resume</h4>
+                <asp:FileUpload runat="server" ID="resumeUpload" AllowMultiple="False"/>
+                <asp:TextBox runat="server" ID="ResumeName" Visible="False" ReadOnly="True"></asp:TextBox>
+                <h4>Upload Picture</h4>
+                <asp:FileUpload runat="server" ID="pictureUpload" AllowMultiple="False"/>
+                <asp:TextBox runat="server" ID="PictureName" Visible="False" ReadOnly="True"></asp:TextBox>
+                <asp:Button runat="server" ID="SubmitBtn" Text="Submit" OnClick="SubmitBtn_Click"/>
             </div>
         </div>
     </div>
